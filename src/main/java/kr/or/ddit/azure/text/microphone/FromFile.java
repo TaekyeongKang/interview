@@ -1,0 +1,86 @@
+package kr.or.ddit.azure.text.microphone;
+
+import java.util.concurrent.Future;
+
+import com.microsoft.cognitiveservices.speech.*;
+import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
+import com.microsoft.cognitiveservices.speech.audio.PullAudioInputStreamCallback;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+/**
+ * Quickstart: recognize speech using the Speech SDK for Java.
+ */
+public class FromFile  extends PullAudioInputStreamCallback{
+
+    /**
+     * @param args Arguments are ignored in this sample.
+     */
+    public static void main(String[] args) {
+        try {
+            // Replace below with your own subscription key
+            String speechSubscriptionKey = "8e1d8a815cd34bd4b7fee2b71344ef49";
+            // Replace below with your own service region (e.g., "westus").
+            String serviceRegion = "koreacentral";
+
+            int exitCode = 1;
+            SpeechConfig config = SpeechConfig.fromSubscription(speechSubscriptionKey, serviceRegion);
+            config.setSpeechRecognitionLanguage("ko-KR");
+            assert(config != null);
+
+            
+            AudioConfig audioConfig = AudioConfig.fromWavFileInput("yourwaveFile.wav");
+            SpeechRecognizer recognizer = new SpeechRecognizer(config, audioConfig);
+            assert(recognizer != null);
+
+            System.out.println("Say something...");
+
+            Future<SpeechRecognitionResult> task = recognizer.recognizeOnceAsync();
+            assert(task != null);
+
+            SpeechRecognitionResult result = task.get();
+            assert(result != null);
+
+            if (result.getReason() == ResultReason.RecognizedSpeech) {
+                System.out.println("We recognized: " + result.getText());
+                exitCode = 0;
+            }
+            else if (result.getReason() == ResultReason.NoMatch) {
+                System.out.println("NOMATCH: Speech could not be recognized.");
+            }
+            else if (result.getReason() == ResultReason.Canceled) {
+                CancellationDetails cancellation = CancellationDetails.fromResult(result);
+                System.out.println("CANCELED: Reason=" + cancellation.getReason());
+
+                if (cancellation.getReason() == CancellationReason.Error) {
+                    System.out.println("CANCELED: ErrorCode=" + cancellation.getErrorCode());
+                    System.out.println("CANCELED: ErrorDetails=" + cancellation.getErrorDetails());
+                    System.out.println("CANCELED: Did you update the subscription info?");
+                }
+            }
+
+            recognizer.close();
+
+            System.exit(exitCode);
+        } catch (Exception ex) {
+            System.out.println("Unexpected exception: " + ex.getMessage());
+
+            assert(false);
+            System.exit(1);
+        }
+    }
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int read(byte[] arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+}
+// </code>

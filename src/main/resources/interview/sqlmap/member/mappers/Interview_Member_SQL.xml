@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.sample.service.impl.SampleMapper">
+
+<select id="getMember" parameterType="String"   resultType="memberVO">
+    SELECT *
+      FROM users 
+     WHERE userid = #{userid}
+  </select>
+  
+  <select id="selectMemberList" parameterType="searchVO" resultType="memberVO">
+
+			SELECT *
+			FROM users
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+		        <choose>
+		            <when test="searchCondition == 0">
+						AND	userid LIKE '%' || #{searchKeyword} || '%'
+					</when>
+		            <when test="searchCondition == 1">
+						AND	usernm LIKE '%' || #{searchKeyword} || '%'
+					</when>
+				</choose>
+			</if>
+			ORDER BY userid ASC
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+  
+</mapper>
