@@ -6,5 +6,10 @@
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 		<typeAlias alias="searchVO" type="com.ai_interview.member.service.SampleDefaultVO"/>
 		<typeAlias alias="memberVO" type="com.ai_interview.member.service.MemberVO"/>
+		<typeAlias alias="habitVO" type="kr.or.ddit.interview.model.HabitVO"/>
     </typeAliases>
+    
+    <mappers>
+    	<mapper resource="interview/sqlmap/mappers/interview.xml"/>
+ 	</mappers>
 </configuration>

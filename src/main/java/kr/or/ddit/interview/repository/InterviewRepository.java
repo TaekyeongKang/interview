@@ -2,23 +2,21 @@ package kr.or.ddit.interview.repository;
 
 import org.springframework.stereotype.Repository;
 
-import kr.or.ddit.interview.model.HabitAnalysisVO;
-import kr.or.ddit.interview.model.RepetAnalysisVO;
+import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
 @Repository("interviewRepository")
-public class InterviewRepository implements InterviewRepositoryI{
+public class InterviewRepository extends EgovAbstractDAO implements InterviewRepositoryI {
 
 
 	@Override
 	public int insertHabit(Object habitAnalysisVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return (int) insert("habit.insertHabit", habitAnalysisVO);
 	}
+
 
 	@Override
 	public int insertRepet(Object repetAnalysisVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return (int) insert("repet.insertRepet", repetAnalysisVO);
 	}
 
 }
